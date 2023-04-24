@@ -15,40 +15,46 @@ function createEmployeeRecords(array) {
 }
 
 function createTimeInEvent(record, time) {
-    const type = 'TimeIn';
-    const date = time.split(' ')[0];
-    const hour = Number(time.split(' ')[1]);
-    record.timeInEvents = [...record.timeInEvents, {
-        'type': type,
-        'date': date,
-        'hour': hour
-    }]
-    return record;
+    if (time.length === 15 && time[10] === ' ') {
+        const type = 'TimeIn';
+        const date = time.split(' ')[0];
+        const hour = Number(time.split(' ')[1]);
+        record.timeInEvents = [...record.timeInEvents, {
+            'type': type,
+            'date': date,
+            'hour': hour
+        }]
+        return record;
+    } else {
+        alert('Wrong date/time format!')
+    }
 }
 
 function createTimeOutEvent(record, time) {
-    const type = 'TimeOut';
-    const date = time.split(' ')[0];
-    const hour = Number(time.split(' ')[1]);
-    record.timeOutEvents = [...record.timeOutEvents, {
-        'type': type,
-        'date': date,
-        'hour': hour
-    }]
-    return record;
+    if (time.length === 15 && time[10] === ' ') {
+        const type = 'TimeOut';
+        const date = time.split(' ')[0];
+        const hour = Number(time.split(' ')[1]);
+        record.timeOutEvents = [...record.timeOutEvents, {
+            'type': type,
+            'date': date,
+            'hour': hour
+        }]
+        return record;
+    } else {
+        alert('Wrong date/time format!')
+    }
 }
 
 function hoursWorkedOnDate(record, date) {
     let timeIn;
     let timeOut;
     for (const timeInElement of record.timeInEvents) {
-        if (timeInElement.date === date) {
-            timeIn = timeInElement.hour;
-        }
-    }
-    for (const timeOutElement of record.timeOutEvents) {
-        if (timeOutElement.date === date) {
-            timeOut = timeOutElement.hour;
+        for (const timeOutElement of record.timeOutEvents) {
+            if (timeInElement.date === date && timeOutElement.date === date) {
+                timeIn = timeInElement.hour;
+                timeOut = timeOutElement.hour;
+            }
         }
     }
     return (timeOut - timeIn)/100;
